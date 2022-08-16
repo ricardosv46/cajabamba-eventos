@@ -22,6 +22,8 @@ const Eventos = () => {
 	const fechaI = `${fechaInicial} ${horaInicial}`
 	const fechaF = `${fechaFinal} ${horaFinal}`
 	const isDisableAbono = moment().isBetween(moment(fechaI), moment(fechaF)) ? false : true
+
+	console.log(eventos)
 	return (
 		<>
 			<OpenGraph
@@ -29,9 +31,9 @@ const Eventos = () => {
 				link='Cajabamba'
 				description='Compra tus entradas del mejor evento de la ciudad.'
 				domain='cajabamba.plazaticket.com'
-				img='https://cajabamba.plazaticket.com/imgs/flyers/flyer1.jpg'
+				img='https://apicajabamba.plazaticket.com/imgs/flyers/flyer1.jpg'
 				keywords='Entradas,Eventos,PLazas'
-				url='https://cajabamba.plazaticket.com/eventos'
+				url='https://apicajabamba.plazaticket.com/eventos'
 			/>
 
 			<div className='bg-fondo pb-10'>
@@ -39,8 +41,9 @@ const Eventos = () => {
 					<div className=''>
 						<h1 className='text-3xl font-bold text-primary'>Compra tu abono para toda la temporada</h1>
 						<p className='text-base w-full max-w-[530px] mt-5 text-justify'>
-							La compra de abonos está ya <strong>disponible</strong> exclusivamente a través de nuestra plataforma online. Compra ahora
-							tus abonos con un {abono.descuento}% de descuento y disfruta de la mejor fiesta taurina de la temporada.
+							La compra de abonos está ya <strong>disponible</strong> exclusivamente a través de nuestra
+							plataforma online. Compra ahora tus abonos con un {abono.descuento}% de descuento y disfruta
+							de la mejor fiesta taurina de la temporada.
 						</p>
 					</div>
 					<div className='mt-5'>
@@ -58,12 +61,15 @@ const Eventos = () => {
 						<div className='mx-auto'>
 							<div>
 								<div className='mt-5 relative '>
-									<Image src={abono?.imagenPrincipal?.url!} loading='lazy' alt='descuento' width={1000} height={250} />
+									<Image
+										src={abono?.imagenPrincipal?.url!}
+										loading='lazy'
+										alt='descuento'
+										width={1000}
+										height={250}
+									/>
 									<div className='absolute w-full  bottom-5 md:bottom-10 '>
-										<div className='w-full flex flex-col gap-1 md:gap-y-2 items-center'>
-											{/* <h2 className='text-xs sm:text-3xl md:text-4xl text-yellow-500 font-semibold'>{abono?.titulo}</h2>
-											<p className='text-white'>{abono?.descripcionCorta}</p> */}
-										</div>
+										<div className='w-full flex flex-col gap-1 md:gap-y-2 items-center'></div>
 									</div>
 								</div>
 							</div>
@@ -87,8 +93,9 @@ const Eventos = () => {
 					<div className='my-10'>
 						<h1 className='text-3xl font-bold text-primary'>Elige el evento</h1>
 						<p className='text-base w-full max-w-[530px] mt-5 text-justify'>
-							La compra de abonos está ya <strong>disponible</strong> exclusivamente a través de nuestra plataforma online. Compra ahora
-							tus abonos con un {abono.descuento}% de descuento y disfruta de la mejor fiesta taurina de la temporada.
+							La compra de abonos está ya <strong>disponible</strong> exclusivamente a través de nuestra
+							plataforma online. Compra ahora tus abonos con un {abono.descuento}% de descuento y disfruta
+							de la mejor fiesta taurina de la temporada.
 						</p>
 					</div>
 
@@ -97,7 +104,12 @@ const Eventos = () => {
 							const fechaInicialEvento = `${item?.fechaInicial} ${item?.horaInicial}`
 							const fechaFinalEvento = `${item?.fechaFinal} ${item?.horaFinal}`
 
-							const isDisabledEvento = moment().isBetween(moment(fechaInicialEvento), moment(fechaFinalEvento)) ? false : true
+							const isDisabledEvento = moment().isBetween(
+								moment(fechaInicialEvento),
+								moment(fechaFinalEvento)
+							)
+								? false
+								: true
 
 							return (
 								<article
@@ -110,13 +122,17 @@ const Eventos = () => {
 												<IconCalendar width={14} height={14} fill='#4c000c' />
 											</div>
 
-											<div className='mt-0.5 text-primary'>{moment(item?.fecha).format('LL')}</div>
+											<div className='mt-0.5 text-primary'>
+												{moment(item?.fecha).format('LL')}
+											</div>
 										</div>
 										<div className='flex  items-center gap-x-1'>
 											<div className=''>
 												<IconHour width={14} height={14} fill='#4c000c' />
 											</div>
-											<div className='mt-0.5 text-primary'>{moment(item?.fecha + ' ' + item?.hora).format('hh:mm A')}</div>
+											<div className='mt-0.5 text-primary'>
+												{moment(item?.fecha + ' ' + item?.hora).format('hh:mm A')}
+											</div>
 										</div>
 									</div>
 									<h6 className='text-[#4c000c] font-bold text-3xl text-left my-3'>{item?.titulo}</h6>

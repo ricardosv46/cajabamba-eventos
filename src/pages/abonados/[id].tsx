@@ -40,6 +40,8 @@ const Detalle = () => {
 		refetchAsientos()
 	}, [id])
 
+	console.log({ butacas })
+
 	const total = seleccionados.reduce((previousValue, currentValue) => previousValue + currentValue.precio, 0)
 
 	return (
@@ -75,7 +77,7 @@ const Detalle = () => {
 							}}
 							tipo='abono'
 							doble={id === 'T2S' ? 'Tendido2' : id === 'T3' ? 'Tendido3' : 'Ruedo'}
-							direccion={id === 'T3A' ? 'end' : id === 'T3B' ? 'start' : 'center'}
+							direccion={id === 'T1I' ? 'end' : id === 'T2P' ? 'start' : 'center'}
 							id={id}
 						/>
 					)}

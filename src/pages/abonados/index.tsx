@@ -9,7 +9,16 @@ import Spinner from '../../components/spinner'
 import { useAbonado } from '../../services/useAbonado'
 import { usePreciosRefs } from '../../services/usePreciosRefs'
 
-const colors = ['bg-[#F89F59]', ' bg-[#FFD066]', 'bg-[#FFDA99]', 'bg-[#D03B3E]', 'bg-[#E7565C]', 'bg-[#E7565C]']
+const colors = [
+	'bg-[#F89F59]',
+	'bg-[#FFD066]',
+	'bg-[#FFDA99]',
+	'bg-[#D03B3E]',
+	'bg-[#E7565C]',
+	'bg-[#E7565C]',
+	'bg-[#F89F59]',
+	'bg-[#FFD066]'
+]
 
 const Abonados = () => {
 	const { abono, loading } = useAbonado()
@@ -22,6 +31,8 @@ const Abonados = () => {
 		})
 	}
 	const { precios } = usePreciosRefs()
+
+	console.log({ precios })
 
 	return (
 		<>
@@ -48,21 +59,7 @@ const Abonados = () => {
 										<h1 className='text-3xl font-extrabold'>{abono?.titulo}</h1>
 										<h2 className='text-3xl font-extrabold'>Compra tu Abono</h2>
 									</div>
-									<div className='flex gap-x-5 items-center mt-4'>
-										{/* <div className='flex gap-x-3'>
-											<div className='mt-0.5'>
-												<IconCalendar width={16} height={16} fill='#4C000C' />
-											</div>
-
-											<div className=''>{moment(abono?.fecha).format('LL')}</div>
-										</div> */}
-										{/* <div className='flex gap-x-3'>
-											<div className='mt-0.5'>
-												<IconHour width={16} height={16} fill='#4C000C' />
-											</div>
-											<div className=''>{moment(abono?.fecha + ' ' + abono?.hora).format('hh:mm A')}</div>
-										</div> */}
-									</div>
+									<div className='flex gap-x-5 items-center mt-4'></div>
 									<div className='flex justify-center mt-5 '>
 										<Image
 											src={`/imgs/compra/coliseo.jpg`}
@@ -89,22 +86,10 @@ const Abonados = () => {
 										loading='lazy'
 										className='object-cover'
 									/>
-									<h2 className='text-2xl text-center mt-2 text-primary font-bold '>{abono?.titulo}</h2>
-									<div className='flex gap-x-5 justify-center items-center'>
-										{/* <div className='flex gap-x-3'>
-											<div className='mt-0.5'>
-												<IconCalendar width={16} height={16} fill='#4C000C' />
-											</div>
-
-											<div className=''>{moment(abono?.fecha).format('LL')}</div>
-										</div>
-										<div className='flex gap-x-3'>
-											<div className='mt-0.5'>
-												<IconHour width={16} height={16} fill='#4C000C' />
-											</div>
-											<div className=''>{moment(abono?.fecha + ' ' + abono?.hora).format('hh:mm A')}</div>
-										</div> */}
-									</div>
+									<h2 className='text-2xl text-center mt-2 text-primary font-bold '>
+										{abono?.titulo}
+									</h2>
+									<div className='flex gap-x-5 justify-center items-center'></div>
 									<p className='text-md text-text text-center'>
 										¡Disfruta una emocionante tarde de toros en la comodidad de nuestras butacas!
 									</p>
@@ -118,8 +103,12 @@ const Abonados = () => {
 											key={item?.tendido}
 											className='shadow-md rounded-lg bg-[#f9f9f9] border flex justify-between p-3 items-center '>
 											<div>
-												<p className='text-sm text-primary font-semibold leading-5'>{item?.titulo}</p>
-												<p className='text-sm text-primary font-semibold leading-5'>desde S/ {item?.precio}</p>
+												<p className='text-sm text-primary font-semibold leading-5'>
+													{item?.titulo}
+												</p>
+												<p className='text-sm text-primary font-semibold leading-5'>
+													desde S/ {item?.precio}
+												</p>
 											</div>
 
 											<button

@@ -16,301 +16,280 @@ import { isEmpty } from '../../utils/isEmpty'
 import ModalLoading from '../modal/modalLoading'
 
 interface Props {
-  isAbono: boolean
-  onSubmit: (res: { ok?: boolean; error?: string }) => void
-  desabilitados: any[]
-  isOpen:boolean
-  onOpen: () => void
-  onClose: () => void
+	isAbono: boolean
+	onSubmit: (res: { ok?: boolean; error?: string }) => void
+	desabilitados: any[]
+	isOpen: boolean
+	onOpen: () => void
+	onClose: () => void
 }
 
 const fecha = moment().format('YYYY-MM-DD')
 
 const validate = async (values: FormikValues) => {
-  let errors: FormikErrors<FormikValues> = {}
+	let errors: FormikErrors<FormikValues> = {}
 
-  const isDNI = values.tipoComprobante === 'Boleta'
-  const isRUC = values.tipoComprobante === 'Factura'
+	const isDNI = values.tipoComprobante === 'Boleta'
+	const isRUC = values.tipoComprobante === 'Factura'
 
-  if (isDNI) {
-    if (isEmpty(values.documento)) {
-      errors.documento = 'El DNI es requerido'
-    }
+	if (isDNI) {
+		if (isEmpty(values.documento)) {
+			errors.documento = 'El DNI es requerido'
+		}
 
-    if (values.documento.length !== 8) {
-      errors.documento = 'El DNI debe tener 8 dígitos'
-    }
-  }
+		if (values.documento.length !== 8) {
+			errors.documento = 'El DNI debe tener 8 dígitos'
+		}
+	}
 
-  if (isRUC) {
-    if (isEmpty(values.documento)) {
-      errors.documento = 'El RUC es requerido'
-    }
+	if (isRUC) {
+		if (isEmpty(values.documento)) {
+			errors.documento = 'El RUC es requerido'
+		}
 
-    if (values.documento.length !== 11) {
-      errors.documento = 'El RUC debe tener 11 dígitos'
-    }
+		if (values.documento.length !== 11) {
+			errors.documento = 'El RUC debe tener 11 dígitos'
+		}
 
-    if (isEmpty(values.razonSocial)) {
-      errors.razonSocial = 'La Razon Social es requerida'
-    }
-  }
+		if (isEmpty(values.razonSocial)) {
+			errors.razonSocial = 'La Razon Social es requerida'
+		}
+	}
 
-  return errors
+	return errors
 }
 
-export const FormPayAuth = ({ isAbono, onSubmit, desabilitados ,isOpen, onOpen, onClose}: Props) => {
-  const { pago, EnviarPago } = usePaymentContext()
-  const [isChecked, setIsChecked] = useState(false)
-  
-  const navigation = useRouter()
-  const { createPedidoEvento,loadingCreate:loadingCreateAbonado  } = usePedidoEvento()
-  const { createPedidoAbonado,loadingCreate:loadingCreateEvento } = usePedidoAbonado()
-  const user = JSON.parse(localStorage.getItem('user') as any)
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-    useFormik({
-      validate,
-      onSubmit: onOpen,
-      initialValues: {
-        tipoComprobante: 'Boleta',
-        documento: '',
-        razonSocial: ''
-      }
-    })
+export const FormPayAuth = ({ isAbono, onSubmit, desabilitados, isOpen, onOpen, onClose }: Props) => {
+	const { pago, EnviarPago } = usePaymentContext()
+	const [isChecked, setIsChecked] = useState(false)
 
-  const handleOnChangeCheckBox = () => {
-    setIsChecked(!isChecked)
-  }
+	const navigation = useRouter()
+	const { createPedidoEvento, loadingCreate: loadingCreateAbonado } = usePedidoEvento()
+	const { createPedidoAbonado, loadingCreate: loadingCreateEvento } = usePedidoAbonado()
+	const user = JSON.parse(localStorage.getItem('user') as any)
+	const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
+		validate,
+		onSubmit: onOpen,
+		initialValues: {
+			tipoComprobante: 'Boleta',
+			documento: '',
+			razonSocial: ''
+		}
+	})
 
-  const handlePay = async ({ id }: { id: string }) => {
-    const transaccionId = parseInt(id)
+	const handleOnChangeCheckBox = () => {
+		setIsChecked(!isChecked)
+	}
 
-    if (isAbono) {
-      const res = await createPedidoAbonado({
-        input1: {
-          transaccionId,
-          precioTotal: total,
-          fechaPedido: fecha,
-          numeroComprobante: values.documento,
-          tipoComprobante: values.tipoComprobante,
-          razonSocial:
-            values.tipoComprobante === 'Factura'
-              ? values?.razonSocial
-              : `${user?.nombres} ${user?.apellidos}`
-        },
-        input2: pago,
-        input3: {}
-      })
+	const handlePay = async ({ id }: { id: string }) => {
+		const transaccionId = parseInt(id)
 
-      onSubmit(res)
-    }
+		if (isAbono) {
+			const res = await createPedidoAbonado({
+				input1: {
+					transaccionId,
+					precioTotal: total,
+					fechaPedido: fecha,
+					numeroComprobante: values.documento,
+					tipoComprobante: values.tipoComprobante,
+					razonSocial:
+						values.tipoComprobante === 'Factura'
+							? values?.razonSocial
+							: `${user?.nombres} ${user?.apellidos}`
+				},
+				input2: pago,
+				input3: {}
+			})
 
-    if (!isAbono) {
-      const res = await createPedidoEvento({
-        input1: {
-          transaccionId,
-          precioTotal: total,
-          fechaPedido: fecha,
-          numeroComprobante: values.documento,
-          tipoComprobante: values.tipoComprobante,
-          razonSocial:
-            values.tipoComprobante === 'Factura'
-              ? values?.razonSocial
-              : `${user?.nombres} ${user?.apellidos}`
-        },
-        input2: pago,
-        input3: {}
-      })
+			onSubmit(res)
+		}
 
-      onSubmit(res)
-    }
-  }
+		if (!isAbono) {
+			const res = await createPedidoEvento({
+				input1: {
+					transaccionId,
+					precioTotal: total,
+					fechaPedido: fecha,
+					numeroComprobante: values.documento,
+					tipoComprobante: values.tipoComprobante,
+					razonSocial:
+						values.tipoComprobante === 'Factura'
+							? values?.razonSocial
+							: `${user?.nombres} ${user?.apellidos}`
+				},
+				input2: pago,
+				input3: {}
+			})
 
-  const total = pago.reduce((prev, curr) => prev + curr.precio, 0)
+			onSubmit(res)
+		}
+	}
 
-  useEffect(() => {
-    const desabilitado = pago.map((seleccionado) =>
-      desabilitados.some(
-        (desabilitado) => desabilitado?.reservado === seleccionado?.reservado
-      )
-    )[0]
+	const total = pago.reduce((prev, curr) => prev + curr.precio, 0)
 
-    if(desabilitados){
-      onClose()
-    }
-    setIsChecked(!desabilitado)
+	useEffect(() => {
+		const desabilitado = pago.map((seleccionado) =>
+			desabilitados.some((desabilitado) => desabilitado?.reservado === seleccionado?.reservado)
+		)[0]
 
-    if (pago?.length < 1) {
-      navigation.back()
-    }
-  }, [desabilitados, pago])
+		if (desabilitados) {
+			onClose()
+		}
+		setIsChecked(!desabilitado)
 
-  return (
-    <form
-      onSubmit={handleSubmit}
-      className="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-8"
-    >
-      <ModalLoading isOpen={loadingCreateAbonado|| loadingCreateEvento } />
-      <ModalPayme
-        isOpen={isOpen}
-        onClose={onClose}
-        onChange={handlePay}
-        payload={payRequest({ amount: total,
-          first_name:user?.nombres || '',
-          last_name:user?.apellidos || '',
-          email:user?.email || '',
-          subscriber:user?.celular || '',
-          identity_document_identifier:user.documento || values?.documento
-         })}
-      />
+		if (pago?.length < 1) {
+			navigation.back()
+		}
+	}, [desabilitados, pago])
 
-      <div className="grid h-auto grid-cols-1 sm:grid-cols-2 gap-6">
-        <select
-          name="tipoComprobante"
-          className="rounded-md h-[50px] px-3 border border-gray-300 "
-          value={values.tipoComprobante}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        >
-          <option className="" value="Boleta">
-            Boleta
-          </option>
-          <option className="" value="Factura">
-            Factura
-          </option>
-        </select>
+	return (
+		<form onSubmit={handleSubmit} className='grid grid-cols-1 lg:grid-cols-2 gap-3 mt-8'>
+			<ModalLoading isOpen={loadingCreateAbonado || loadingCreateEvento} />
+			<ModalPayme
+				isOpen={isOpen}
+				onClose={onClose}
+				onChange={handlePay}
+				payload={payRequest({
+					amount: total,
+					first_name: user?.nombres || '',
+					last_name: user?.apellidos || '',
+					email: user?.email || '',
+					subscriber: user?.celular || '999999999',
+					identity_document_identifier: user.documento || values?.documento
+				})}
+			/>
 
-        <div className="relative">
-          <InputFloat
-            type="text"
-            label={values.tipoComprobante === 'Factura' ? 'RUC' : 'DNI'}
-            name="documento"
-            value={values.documento}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            maxLength={values.tipoComprobante === 'Factura' ? 11 : 8}
-          />
-          {errors.documento && touched.documento ? (
-            <p className="text-red-500 leading-5 absolute top-[50px] text-sm px-1 ">
-              {errors.documento}
-            </p>
-          ) : null}
-        </div>
+			<div className='grid h-auto grid-cols-1 sm:grid-cols-2 gap-6'>
+				<select
+					name='tipoComprobante'
+					className='rounded-md h-[50px] px-3 border border-gray-300 '
+					value={values.tipoComprobante}
+					onChange={handleChange}
+					onBlur={handleBlur}>
+					<option className='' value='Boleta'>
+						Boleta
+					</option>
+					<option className='' value='Factura'>
+						Factura
+					</option>
+				</select>
 
-        {values.tipoComprobante === 'Factura' && (
-          <div className="relative">
-            <InputFloat
-              type="text"
-              label="Razon Social"
-              name="razonSocial"
-              value={values.razonSocial}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {errors.razonSocial && touched.razonSocial ? (
-              <p className="text-red-500 leading-5 absolute -bottom-5 text-sm px-1 ">
-                {errors.razonSocial}
-              </p>
-            ) : null}
-          </div>
-        )}
-        {values.tipoComprobante === 'Factura' && <div></div>}
+				<div className='relative'>
+					<InputFloat
+						type='text'
+						label={values.tipoComprobante === 'Factura' ? 'RUC' : 'DNI'}
+						name='documento'
+						value={values.documento}
+						onChange={handleChange}
+						onBlur={handleBlur}
+						maxLength={values.tipoComprobante === 'Factura' ? 11 : 8}
+					/>
+					{errors.documento && touched.documento ? (
+						<p className='text-red-500 leading-5 absolute top-[50px] text-sm px-1 '>{errors.documento}</p>
+					) : null}
+				</div>
 
-        <div className="flex items-center gap-x-2">
-          <input
-            type="checkbox"
-            id="topping"
-            name="topping"
-            value="Terminos"
-            checked={isChecked}
-            onChange={handleOnChangeCheckBox}
-          />
+				{values.tipoComprobante === 'Factura' && (
+					<div className='relative'>
+						<InputFloat
+							type='text'
+							label='Razon Social'
+							name='razonSocial'
+							value={values.razonSocial}
+							onChange={handleChange}
+							onBlur={handleBlur}
+						/>
+						{errors.razonSocial && touched.razonSocial ? (
+							<p className='text-red-500 leading-5 absolute -bottom-5 text-sm px-1 '>
+								{errors.razonSocial}
+							</p>
+						) : null}
+					</div>
+				)}
+				{values.tipoComprobante === 'Factura' && <div></div>}
 
-          <p
-            className="text-xs cursor-pointer hover:underline hover:text-secondary"
-            onClick={() => window.open('/terminosycondiciones')}
-          >
-            Acepto los términos y condiciones
-          </p>
-        </div>
+				<div className='flex items-center gap-x-2'>
+					<input
+						type='checkbox'
+						id='topping'
+						name='topping'
+						value='Terminos'
+						checked={isChecked}
+						onChange={handleOnChangeCheckBox}
+					/>
 
-        <div className="flex gap-2 justify-start items-center ">
-          <IconShield width={20} height={20} fill="#F0AC42" />
-          <p className="text-md text-[#F0AC42] font-bold">Compra Segura</p>
-        </div>
-      </div>
-      <div>
-        <div className="flex justify-end mb-10">
-          <p className="w-[300px] text-xl font-bold">Nro de entradas</p>
-          <p className="text-xl font-bold">{pago.length}</p>
-        </div>
-        {pago.map((item) => {
-          const desabilitado = desabilitados.some(
-            (desabilitado) => desabilitado?.reservado === item?.reservado
-          )
+					<p
+						className='text-xs cursor-pointer hover:underline hover:text-secondary'
+						onClick={() => window.open('/terminosycondiciones')}>
+						Acepto los términos y condiciones
+					</p>
+				</div>
 
-          const newtiems = pago.filter(
-            (seleccionado) => seleccionado.reservado !== item.reservado
-          )
+				<div className='flex gap-2 justify-start items-center '>
+					<IconShield width={20} height={20} fill='#F0AC42' />
+					<p className='text-md text-[#F0AC42] font-bold'>Compra Segura</p>
+				</div>
+			</div>
+			<div>
+				<div className='flex justify-end mb-10'>
+					<p className='w-[300px] text-xl font-bold'>Nro de entradas</p>
+					<p className='text-xl font-bold'>{pago.length}</p>
+				</div>
+				{pago.map((item) => {
+					const desabilitado = desabilitados.some(
+						(desabilitado) => desabilitado?.reservado === item?.reservado
+					)
 
-          const removeItem = () => {
-            EnviarPago(newtiems)
-          }
+					const newtiems = pago.filter((seleccionado) => seleccionado.reservado !== item.reservado)
 
-          return (
-            <div key={item.reservado} className="relative">
-              <div className="flex w-full justify-between gap-40 pl-20">
-                <p className=" text-xs leading-none mt-2">
-                  1 x ABONO – {item.reservado}
-                </p>
-                <p className="text-md font-bold leading-none">
-                  S/{item.precio.toFixed(2)}
-                </p>
-              </div>
-              <div className="flex w-full justify-between gap-40 pl-20 leading-none">
-                <p className="text-red-500 text-xs left-5 leading-none">
-                  {desabilitado
-                    ? 'No disponible por favor vuleva a seleccionar'
-                    : ''}
-                </p>
-              </div>
-              {desabilitado && (
-                <button
-                  className="text-red-500 absolute -top-0 -right-5"
-                  onClick={removeItem}
-                >
-                  X
-                </button>
-              )}
-            </div>
-          )
-        })}
-        <div className="flex items-center justify-end mt-10 text-2xl font-bold">
-          <p className="w-[200px] ">Total</p>
-          <p>S/{total.toFixed(2)}</p>
-        </div>
+					const removeItem = () => {
+						EnviarPago(newtiems)
+					}
 
-        <div className="w-full flex items-center justify-end gap-x-4 mt-5 ">
-          <div className="mt-1">
-            <Image
-              src="/imgs/detalle/tarjetas-credito.png"
-              alt="Picture of the author"
-              width={110}
-              height={30}
-            />
-          </div>
+					return (
+						<div key={item.reservado} className='relative'>
+							<div className='flex w-full justify-between gap-40 pl-20'>
+								<p className=' text-xs leading-none mt-2'>1 x ABONO – {item.reservado}</p>
+								<p className='text-md font-bold leading-none'>S/{item.precio.toFixed(2)}</p>
+							</div>
+							<div className='flex w-full justify-between gap-40 pl-20 leading-none'>
+								<p className='text-red-500 text-xs left-5 leading-none'>
+									{desabilitado ? 'No disponible por favor vuleva a seleccionar' : ''}
+								</p>
+							</div>
+							{desabilitado && (
+								<button className='text-red-500 absolute -top-0 -right-5' onClick={removeItem}>
+									X
+								</button>
+							)}
+						</div>
+					)
+				})}
+				<div className='flex items-center justify-end mt-10 text-2xl font-bold'>
+					<p className='w-[200px] '>Total</p>
+					<p>S/{total.toFixed(2)}</p>
+				</div>
 
-          <button
-            disabled={!isChecked}
-            type="submit"
-            className={`bg-[#a02e2b] text-white  py-1.5 px-5 sm:px-10 hover:opacity-75 transition-all duration-500 rounded-md ${
-              !isChecked ? 'opacity-50' : 'opacity-100'
-            } `}
-          >
-            Ir a Pagar
-          </button>
-        </div>
-      </div>
-    </form>
-  )
+				<div className='w-full flex items-center justify-end gap-x-4 mt-5 '>
+					<div className='mt-1'>
+						<Image
+							src='/imgs/detalle/tarjetas-credito.png'
+							alt='Picture of the author'
+							width={110}
+							height={30}
+						/>
+					</div>
+
+					<button
+						disabled={!isChecked}
+						type='submit'
+						className={`bg-[#a02e2b] text-white  py-1.5 px-5 sm:px-10 hover:opacity-75 transition-all duration-500 rounded-md ${
+							!isChecked ? 'opacity-50' : 'opacity-100'
+						} `}>
+						Ir a Pagar
+					</button>
+				</div>
+			</div>
+		</form>
+	)
 }

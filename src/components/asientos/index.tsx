@@ -58,16 +58,19 @@ const Asientos = ({
 			const precio = data[i].precio
 			const tendido = data[i].tendido
 
-			tfilas[data[i].codigo] = new Array(data[i].cantidad).fill(null).map((_, i) => ({
-				reservado: `${fila}-${i + 1}`,
-				asientoId: (i + 1).toString(),
-				tendido: tendido,
-				codigo: fila,
-				asiento: i + 1,
-				precio: precio,
-				feriaId: 1,
-				eventoId: evento ? evento : 0
-			}))
+			tfilas[data[i].codigo] = new Array(data[i].cantidad).fill(null).map((_, i) => {
+				const numberId = id.includes('P') ? (i + 1) * 2 : i * 2 + 1
+				return {
+					reservado: `${fila}-${numberId}`,
+					asientoId: numberId.toString(),
+					tendido: tendido,
+					codigo: fila,
+					asiento: numberId,
+					precio: precio,
+					feriaId: 1,
+					eventoId: evento ? evento : 0
+				}
+			})
 		}
 		return tfilas
 	}, [])
@@ -102,12 +105,12 @@ const Asientos = ({
 						</div>
 						<div
 							className={`flex flex-row-reverse justify-${direccion} items-center gap-x-1.5  ${
-								id === 'T1'
-									? 'w-[1200px]'
-									: id === 'T2S'
-									? 'w-[2740px]'
-									: id === 'T2B'
-									? 'w-[1500px]'
+								id === 'T1P'
+									? 'w-[800px]'
+									: id === 'T1I'
+									? 'w-[1600px]'
+									: id === 'T2P'
+									? 'w-[1800px]'
 									: id === 'T3'
 									? 'w-[2100px]'
 									: 'w-[700px]'
@@ -174,12 +177,12 @@ const Asientos = ({
 				))}
 				<div
 					className={`${
-						id === 'T1'
-							? 'w-[1160px]'
-							: id === 'T2S'
-							? 'w-[2670px]'
-							: id === 'T2B'
-							? 'w-[1450px]'
+						id === 'T1P'
+							? 'w-[760px]'
+							: id === 'T1I'
+							? 'w-[1560px]'
+							: id === 'T2P'
+							? 'w-[1760px]'
 							: id === 'T3'
 							? 'w-[2000px]'
 							: 'w-[650px]'
