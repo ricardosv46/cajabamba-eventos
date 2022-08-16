@@ -1,0 +1,9 @@
+query GetAllAsientos($tendido: String, $eventoId: Int) {
+  GetAllAsientos(tendido: $tendido, eventoId: $eventoId) {
+    asientoId
+    tendido
+    codigo
+    asiento
+    reservado
+  }
+}

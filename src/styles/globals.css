@@ -1,0 +1,293 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './payme.css';
+
+/* FrankRuhlLibre */
+
+@font-face {
+	font-family: FrankRuhl;
+	font-weight: 900;
+	font-display: swap;
+	src: url(/fonts/Frank_Ruhl_Libre/FrankRuhlLibre-Black.ttf);
+}
+
+@font-face {
+	font-family: FrankRuhl;
+	font-weight: 700;
+	font-display: swap;
+	src: url(/fonts/Frank_Ruhl_Libre/FrankRuhlLibre-Bold.ttf);
+}
+
+@font-face {
+	font-family: FrankRuhl;
+	font-weight: 300;
+	font-display: swap;
+	src: url(/fonts/Frank_Ruhl_Libre/FrankRuhlLibre-Light.ttf);
+}
+
+@font-face {
+	font-family: FrankRuhl;
+	font-weight: 500;
+	font-display: swap;
+	src: url(/fonts/Frank_Ruhl_Libre/FrankRuhlLibre-Medium.ttf);
+}
+
+@font-face {
+	font-family: FrankRuhl;
+	font-display: swap;
+	src: url(/fonts/Frank_Ruhl_Libre/FrankRuhlLibre-Regular.ttf);
+}
+
+/* NotoSerifDisplay */
+
+@font-face {
+	font-family: NotoSerif;
+	font-weight: 900;
+	font-display: swap;
+	src: url(/fonts/Noto_Serif_Display/NotoSerifDisplay-Black.ttf) format('ttf');
+}
+@font-face {
+	font-family: NotoSerif;
+	font-weight: 800;
+	font-display: swap;
+	src: url(/fonts/Noto_Serif_Display/NotoSerifDisplay-ExtraBold.ttf) format('ttf');
+}
+@font-face {
+	font-family: NotoSerif;
+	font-weight: 700;
+	font-display: swap;
+	src: url(/fonts/Noto_Serif_Display/NotoSerifDisplay-Bold.ttf) format('ttf');
+}
+
+@font-face {
+	font-family: NotoSerif;
+	font-weight: 600;
+	font-display: swap;
+	src: url(/fonts/Noto_Serif_Display/NotoSerifDisplay-SemiBold.ttf) format('ttf');
+}
+
+@font-face {
+	font-family: NotoSerif;
+	font-weight: 500;
+	font-display: swap;
+	src: url(/fonts/Noto_Serif_Display/NotoSerifDisplay-Medium.ttf) format('ttf');
+}
+@font-face {
+	font-family: NotoSerif;
+	font-weight: 400;
+	font-display: swap;
+	src: url(/fonts/Noto_Serif_Display/NotoSerifDisplay-Regular.ttf) format('ttf');
+}
+
+@font-face {
+	font-family: NotoSerif;
+	font-weight: 300;
+	font-display: swap;
+	src: url(/fonts/Noto_Serif_Display/NotoSerifDisplay-Light.ttf) format('ttf');
+}
+
+@font-face {
+	font-family: NotoSerif;
+	font-weight: 200;
+	font-display: swap;
+	src: url(/fonts/Noto_Serif_Display/NotoSerifDisplay-ExtraLight.ttf) format('ttf');
+}
+
+@font-face {
+	font-family: NotoSerif;
+	font-weight: 100;
+	font-display: swap;
+	src: url(/fonts/Noto_Serif_Display/NotoSerifDisplay-Thin.ttf) format('ttf');
+}
+
+/* Fuente Lato */
+
+@font-face {
+	font-family: Lato;
+	font-weight: 300;
+	font-display: swap;
+	src: url(/fonts/Lato/Lato-Light.ttf);
+}
+
+@font-face {
+	font-family: Lato;
+	font-weight: 400;
+	font-display: swap;
+	src: url(/fonts/Lato/Lato-Regular.ttf);
+}
+
+@layer base {
+	p {
+		@apply font-parrafo;
+	}
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+.filter-logo {
+	filter: brightness(0) saturate(100%) invert(21%) sepia(100%) saturate(7117%) hue-rotate(338deg) brightness(32%) contrast(111%);
+}
+
+pre {
+	display: none;
+}
+
+.snap-section {
+	scroll-snap-align: center;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+.custom-scroll::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+	background-color: #4c000c;
+	border-radius: 20px;
+}
+
+/* banner de para paginas */
+.banner {
+	background-size: cover;
+	width: 100%;
+	height: 100vh;
+	/*  height: 955px; */
+	position: relative;
+}
+.banner::before {
+	content: '';
+	background-color: rgba(0, 0, 0, 0.2);
+	top: 0;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+}
+.footer-bg {
+	background-image: linear-gradient(180deg, #4c000c 0%, #240006 100%);
+}
+
+/* banner de para home */
+.banner-home1 {
+	background-image: url('/imgs/banners/banner1.webp');
+}
+.banner-home2 {
+	background-image: url('/imgs/banners/banner2.webp');
+}
+.banner-home3 {
+	background-image: url('/imgs/banners/banner3.webp');
+}
+.banner-home4 {
+	background-image: url('/imgs/banners/banner4.webp');
+}
+.banner-plaza {
+	background-image: url('/imgs/banners/banner1.webp');
+	height: 400px;
+}
+.banner-home5 {
+	background-image: url('/imgs/logos/logo-fondo.png');
+	background-size: 110px;
+	background-color: #fff2e6;
+	background-repeat: no-repeat;
+	height: auto;
+}
+.banner-home5::before {
+	background-color: transparent;
+}
+
+.banner-home6 {
+	background-image: url('/imgs/logos/logo-fondo.png');
+	background-size: cover;
+	background-color: #52040f;
+	background-repeat: no-repeat;
+	height: auto;
+	background-position: bottom right;
+}
+.banner-home6::before {
+	background-color: transparent;
+}
+
+.bg-fondo {
+	background-color: transparent;
+	background-image: radial-gradient(at center center, #fff2e6 50%, #f0d6be 100%);
+}
+
+.banner-parallax {
+	background-image: url('/imgs/home/torero.jpg');
+	background-size: contain;
+	background-color: #2f080d;
+	background-position: calc(50% - 300px) calc(50% - -100px);
+	background-repeat: no-repeat;
+	width: auto;
+	height: auto;
+	background-attachment: fixed;
+}
+@media (max-width: 768px) {
+	.banner-parallax {
+		background-position: center;
+		height: 100%;
+	}
+}
+
+.banner-parallax-plaza {
+	background-image: url('/imgs/home/backsomos.png');
+	background-size: 700px 1500px;
+	background-position: calc(100%) calc(100% + 250px);
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 100%;
+	background-attachment: fixed;
+}
+@media (max-width: 768px) {
+	.banner-parallax-plaza {
+		background-position: center;
+		height: 100%;
+	}
+}
+
+.banner-parallax::before {
+	background-color: transparent;
+}
+
+/* banner de para plaza */
+.banner-plaza::before {
+	content: '';
+	background-color: #4c000c;
+	opacity: 0.24;
+	top: 0;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+.swiper-button-next:after {
+	font-size: 15px !important;
+	font-weight: bolder;
+	color: white !important;
+}
+
+.swiper-button-prev:after {
+	font-size: 15px !important;
+	font-weight: bolder;
+	color: white !important;
+}
+.swiper-pagination-bullet-active {
+	background-color: #fff !important;
+}
+
+input:focus-within ~ .label,
+input:not(:placeholder-shown) ~ .label {
+	@apply transform  -translate-y-4 duration-300  text-xs;
+}
+
+input:focus-within ~ .label {
+	@apply text-primary;
+}

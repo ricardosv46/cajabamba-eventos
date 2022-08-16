@@ -1,0 +1,6 @@
+mutation CreatePedidoAbonado($input1: PedidoInput!, $input2: [DetallePedidoInput!], $input3: UserInput) {
+  CreatePedidoAbonado(input1: $input1, input2: $input2, input3: $input3) {
+    pedidoId
+    tipoComprobante
+  }
+}

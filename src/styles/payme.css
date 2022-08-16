@@ -1,0 +1,39 @@
+#payme h2 {
+  @apply hidden;
+}
+
+#payme form {
+  @apply w-80 grid grid-cols-5 gap-5;
+}
+
+#payme .field {
+  @apply flex flex-col;
+}
+
+#payme .field label {
+  @apply text-sm text-gray-500 font-semibold;
+}
+
+#payme .field input {
+  @apply outline-none h-12 rounded-md focus:border-primary text-sm text-gray-900 font-semibold border border-gray-300 px-2.5 py-5;
+}
+
+#payme .submit {
+  @apply col-span-5 relative h-10;
+}
+
+#payme .submit button {
+  @apply w-full py-2 bg-primary text-white rounded-md;
+}
+
+#payme .field.field-v_pan {
+  @apply col-span-5;
+}
+
+#payme .field.field-v_expirydate {
+  @apply col-span-3;
+}
+
+#payme .field.field-v_cvv2 {
+  @apply col-span-2;
+}

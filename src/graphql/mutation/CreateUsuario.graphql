@@ -1,0 +1,13 @@
+mutation CreateUsuario($input: UserInput!) {
+  CreateUsuario(input: $input) {
+    id
+    tipoUsuario
+    tipoDocumento
+    numeroDocumento
+    nombres
+    apellidos
+    celular
+    email
+    apiToken
+  }
+}

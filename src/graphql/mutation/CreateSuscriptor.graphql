@@ -1,0 +1,7 @@
+mutation CreateSuscriptor($input: SuscriptorInput!) {
+  CreateSuscriptor(input: $input) {
+    suscriptorId
+    nombres
+    email
+  }
+}

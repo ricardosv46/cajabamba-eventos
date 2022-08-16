@@ -1,0 +1,15 @@
+mutation UpdateAsignacionEntrada($input: AsignacionEntradaInput!) {
+  UpdateAsignacionEntrada(input: $input) {
+    asientoId
+    tipoDocumento
+    numDocumento
+    nombres
+    apellidos
+    reservado
+    tendido
+    codigo
+    estado
+    eventoId
+    userId
+  }
+}

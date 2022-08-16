@@ -1,0 +1,14 @@
+query GetAllEventosUsuario {
+  GetAllEventosUsuario {
+    numeroTotal
+    data {
+      eventoId
+      titulo
+      imagenPrincipal {
+        id
+        titulo
+        url
+      }
+    }
+  }
+}

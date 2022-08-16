@@ -1,0 +1,23 @@
+query GetEventoSlug($slug: String) {
+  GetEventoSlug(slug: $slug) {
+    eventoId
+    titulo
+    descripcionCorta
+    descripcionLarga
+    imagenPrincipal {
+      id
+      titulo
+      url
+    }
+    direccion
+    ubicacion
+    fecha
+    hora
+    terminosCondiciones
+    fechaInicial
+    horaInicial
+    fechaFinal
+    horaFinal
+    estado
+  }
+}

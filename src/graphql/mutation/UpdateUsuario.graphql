@@ -1,0 +1,13 @@
+mutation UpdateUsuario($input: UserInput!) {
+	UpdateUsuario(input: $input) {
+		id
+		tipoUsuario
+		tipoDocumento
+		numeroDocumento
+		nombres
+		apellidos
+		celular
+		email
+		apiToken
+	}
+}

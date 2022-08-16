@@ -1,0 +1,10 @@
+query GetAllAsientosAbonados($tendido: String, $feriaId: Int) {
+  GetAllAsientosAbonados(tendido: $tendido, feriaId: $feriaId) {
+    asientoId
+    tendido
+    codigo
+    reservado
+    asiento
+    feriaId
+  }
+}
