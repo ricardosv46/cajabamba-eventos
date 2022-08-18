@@ -9,6 +9,7 @@ import { usePaymentContext } from '../../../context/payment/PaymentState'
 import { genNombreFilas } from '../../../data/asientos'
 import { gentituloButacas } from '../../../data/tituloButacas'
 import { useAsientosEventos } from '../../../services/useAsientosEventos'
+import { useBloques } from '../../../services/useBloques'
 import { useButacas } from '../../../services/useButacas'
 import { useEventoSlug } from '../../../services/useEventoSlug'
 
@@ -19,7 +20,7 @@ const Detalle = () => {
 	const { id, slug, fecha, hora } = useRouter().query as any
 	const { butacas, loading, refetch } = useButacas(id)
 	const { eventoSlug, loading: loadingEvento, refetch: refetchEvento } = useEventoSlug(slug)
-
+	const { bloques, loading: loadingBloques } = useBloques({ feriaId: 1, tendido: id })
 	useEffect(() => {
 		if (!loading && !loadingEvento) {
 			if (eventoSlug.eventoId && butacas.length > 0) {
@@ -74,12 +75,15 @@ const Detalle = () => {
 						<p className=' text-base text-primary font-bold lg:text-xl'>{gentituloButacas(id)}</p>
 						<div className='flex gap-3 items-center'>
 							<IconDate fill='#4C000C' width={20} height={20} />
-							<p className='text-primary font-bold lg:text-base text-xs'>{moment(eventoSlug?.fecha).format('LL')}</p>
+							<p className='text-primary font-bold lg:text-base text-xs'>
+								{moment(eventoSlug?.fecha).format('LL')}
+							</p>
 						</div>
 					</div>
 					{dataAsientos?.length && (
 						<Asientos
 							{...{
+								bloques,
 								data: dataAsientos,
 								desabilitados: asientos,
 								seleccionados,
