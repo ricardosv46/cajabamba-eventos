@@ -68,6 +68,17 @@ export type Asistente = {
   tipoDocumento?: Maybe<Scalars['String']>;
 };
 
+export type Bloque = {
+  __typename?: 'Bloque';
+  asiento?: Maybe<Scalars['String']>;
+  bloqueId?: Maybe<Scalars['ID']>;
+  codigo?: Maybe<Scalars['String']>;
+  eventoId?: Maybe<Scalars['Int']>;
+  feriaId?: Maybe<Scalars['Int']>;
+  reservado?: Maybe<Scalars['String']>;
+  tendido?: Maybe<Scalars['String']>;
+};
+
 export type Butaca = {
   __typename?: 'Butaca';
   butacaId?: Maybe<Scalars['ID']>;
@@ -453,6 +464,7 @@ export type Query = {
   __typename?: 'Query';
   GetAllAsientos?: Maybe<Array<Maybe<Asiento>>>;
   GetAllAsientosAbonados?: Maybe<Array<Maybe<Asiento>>>;
+  GetAllBloques?: Maybe<Array<Maybe<Bloque>>>;
   GetAllButacas?: Maybe<GetAllButacas>;
   GetAllEntradasUsuario?: Maybe<Array<Maybe<AsignacionEntrada>>>;
   GetAllEventos?: Maybe<GetAllEventos>;
@@ -474,6 +486,12 @@ export type QueryGetAllAsientosArgs = {
 
 
 export type QueryGetAllAsientosAbonadosArgs = {
+  feriaId?: InputMaybe<Scalars['Int']>;
+  tendido?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryGetAllBloquesArgs = {
   feriaId?: InputMaybe<Scalars['Int']>;
   tendido?: InputMaybe<Scalars['String']>;
 };
@@ -695,6 +713,14 @@ export type GetAllAsientosAbonadosQueryVariables = Exact<{
 
 
 export type GetAllAsientosAbonadosQuery = { __typename?: 'Query', GetAllAsientosAbonados?: Array<{ __typename?: 'Asiento', asientoId?: string | null, tendido?: string | null, codigo?: string | null, reservado?: string | null, asiento?: string | null, feriaId?: number | null } | null> | null };
+
+export type GetAllBloquesQueryVariables = Exact<{
+  tendido?: InputMaybe<Scalars['String']>;
+  feriaId?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetAllBloquesQuery = { __typename?: 'Query', GetAllBloques?: Array<{ __typename?: 'Bloque', bloqueId?: string | null, tendido?: string | null, asiento?: string | null, codigo?: string | null, reservado?: string | null } | null> | null };
 
 export type GetAllButacasQueryVariables = Exact<{
   tendido?: InputMaybe<Scalars['String']>;
@@ -1192,6 +1218,46 @@ export function useGetAllAsientosAbonadosLazyQuery(baseOptions?: Apollo.LazyQuer
 export type GetAllAsientosAbonadosQueryHookResult = ReturnType<typeof useGetAllAsientosAbonadosQuery>;
 export type GetAllAsientosAbonadosLazyQueryHookResult = ReturnType<typeof useGetAllAsientosAbonadosLazyQuery>;
 export type GetAllAsientosAbonadosQueryResult = Apollo.QueryResult<GetAllAsientosAbonadosQuery, GetAllAsientosAbonadosQueryVariables>;
+export const GetAllBloquesDocument = gql`
+    query GetAllBloques($tendido: String, $feriaId: Int) {
+  GetAllBloques(tendido: $tendido, feriaId: $feriaId) {
+    bloqueId
+    tendido
+    asiento
+    codigo
+    reservado
+  }
+}
+    `;
+
+/**
+ * __useGetAllBloquesQuery__
+ *
+ * To run a query within a React component, call `useGetAllBloquesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllBloquesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllBloquesQuery({
+ *   variables: {
+ *      tendido: // value for 'tendido'
+ *      feriaId: // value for 'feriaId'
+ *   },
+ * });
+ */
+export function useGetAllBloquesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllBloquesQuery, GetAllBloquesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllBloquesQuery, GetAllBloquesQueryVariables>(GetAllBloquesDocument, options);
+      }
+export function useGetAllBloquesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllBloquesQuery, GetAllBloquesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllBloquesQuery, GetAllBloquesQueryVariables>(GetAllBloquesDocument, options);
+        }
+export type GetAllBloquesQueryHookResult = ReturnType<typeof useGetAllBloquesQuery>;
+export type GetAllBloquesLazyQueryHookResult = ReturnType<typeof useGetAllBloquesLazyQuery>;
+export type GetAllBloquesQueryResult = Apollo.QueryResult<GetAllBloquesQuery, GetAllBloquesQueryVariables>;
 export const GetAllButacasDocument = gql`
     query GetAllButacas($tendido: String) {
   GetAllButacas(tendido: $tendido) {

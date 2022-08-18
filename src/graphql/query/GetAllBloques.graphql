@@ -1,0 +1,9 @@
+query GetAllBloques($tendido: String, $feriaId: Int) {
+	GetAllBloques(tendido: $tendido, feriaId: $feriaId) {
+		bloqueId
+		tendido
+		asiento
+		codigo
+		reservado
+	}
+}

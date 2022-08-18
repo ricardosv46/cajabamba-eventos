@@ -167,8 +167,18 @@ function ImageCropper({ crop, onCropChange, children, id }: Props) {
 								? 'w-[2000px]'
 								: id === 'T2P'
 								? 'w-[2200px]'
-								: 'w-[1580px]'
-						} relative h-full max-w-none max-h-none bg-green-500 mx-auto `}>
+								: id === 'T2I'
+								? 'w-[1190px]'
+								: id === 'T3P'
+								? 'w-[1450px]'
+								: id === 'T3I'
+								? 'w-[2150px]'
+								: id === 'T4P'
+								? 'w-[1560px]'
+								: id === 'T4I'
+								? 'w-[1220px]'
+								: 'w-full'
+						} relative h-full max-w-none max-h-none  mx-auto `}>
 						{/* //@ts-ignore */}
 						{children}
 					</motion.div>

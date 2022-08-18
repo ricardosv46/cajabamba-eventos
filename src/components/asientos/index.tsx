@@ -9,6 +9,7 @@ import IconSearchPlus from '../../../public/icons/IconSearchPlus'
 import { gentamañosbutacas } from '../../data/gentamañosbutacas'
 import Zoom from '../zoom'
 interface IProps {
+	bloques: any[]
 	data: Filas[]
 	seleccionados: IColums[]
 	setSeleccionados: Dispatch<SetStateAction<IColums[]>>
@@ -44,6 +45,7 @@ const Asientos = ({
 	setSeleccionados,
 	data,
 	desabilitados,
+	bloques,
 	nombreFilas,
 	direccion = 'center',
 	doble = 'Ruedo',
@@ -95,86 +97,110 @@ const Asientos = ({
 		setSeleccionados(newids)
 	}, [desabilitados])
 
+	console.log({ bloques })
+
 	return (
 		<Zoom id={id}>
 			<div className='flex flex-col  justify-center items-center  px-5 w-full py-16 gap-1'>
-				{Object.keys(filas).map((fila, index) => (
-					<div key={fila} className='flex justify-center  items-center gap-5 w-full'>
-						<div className='w-36  text-right'>
-							<p className='text-[12px] text-primary font-semibold'>{nombreFilas[index]}</p>
-						</div>
-						<div
-							className={`flex flex-row-reverse justify-${direccion} items-center gap-x-1.5  ${
-								id === 'T1P'
-									? 'w-[800px]'
-									: id === 'T1I'
-									? 'w-[1600px]'
-									: id === 'T2P'
-									? 'w-[1800px]'
-									: id === 'T3'
-									? 'w-[2100px]'
-									: 'w-[700px]'
-							} px-5 `}>
-							{filas[`${fila.toString()}`].map(
-								(
-									{ reservado, precio, asiento, codigo, feriaId, tendido, eventoId }: IColums,
-									index: any
-								) => {
-									if (index < asiento) {
-										const isActive = seleccionados.some(
-											(seleccionado) => seleccionado.reservado === reservado
-										)
+				{Object.keys(filas).map((fila, index) => {
+					const isFilaL = fila === 'T1I-F01' || fila === 'T1I-F02' || fila === 'T1I-F03' || fila === 'T1I-F04'
+					const isFilaR = fila === 'T4P-F01' || fila === 'T4P-F02' || fila === 'T4P-F03' || fila === 'T4P-F04'
+					const reverse =
+						data[index].tendido === 'T1P' ||
+						data[index].tendido === 'T2P' ||
+						data[index].tendido === 'T3P' ||
+						data[index].tendido === 'T4P'
 
-										const disabled = desabilitados.some((_item) => _item?.reservado === reservado)
-										return (
-											<button
-												id={reservado}
-												key={reservado}
-												onClick={() => {
-													if (tipo === 'abono') {
-														selectId({
-															reservado,
-															precio,
-															asiento: asiento.toString(),
-															codigo,
-															feriaId,
-															tendido
-														})
-													}
-													if (tipo === 'evento') {
-														selectId({
-															reservado,
-															precio,
-															asiento: asiento.toString(),
-															codigo,
-															feriaId,
-															tendido,
-															eventoId
-														})
-													}
-												}}
-												disabled={disabled}
-												className={`
-                                  ${
-										disabled
-											? 'bg-text text-white'
-											: isActive
-											? 'bg-butacas text-white'
-											: 'bg-yellow-500  text-primary'
+					return (
+						<div key={fila} className='flex justify-center  items-center gap-5 w-full'>
+							<div className='w-36  text-right'>
+								<p className='text-[12px] text-primary font-semibold'>{nombreFilas[index]}</p>
+							</div>
+							<div
+								className={`flex  justify-${direccion} items-center gap-x-1.5  ${
+									id === 'T1P'
+										? 'w-[800px]'
+										: id === 'T1I'
+										? 'w-[1600px]'
+										: id === 'T2P'
+										? 'w-[1800px]'
+										: id === 'T2I'
+										? 'w-[790px]'
+										: id === 'T3P'
+										? 'w-[1050px]'
+										: id === 'T3I'
+										? 'w-[1750px]'
+										: id === 'T4P'
+										? 'w-[1160px]'
+										: id === 'T4I'
+										? 'w-[820px]'
+										: 'w-full'
+								} px-5  ${reverse && 'flex-row-reverse'} ${isFilaL && 'pl-44'} ${isFilaR && 'pr-44'}`}>
+								{filas[`${fila.toString()}`].map(
+									(
+										{ reservado, precio, asiento, codigo, feriaId, tendido, eventoId }: IColums,
+										index: any
+									) => {
+										if (index < asiento) {
+											const isActive = seleccionados.some(
+												(seleccionado) => seleccionado.reservado === reservado
+											)
+
+											const bloqueados = bloques.some((_item) => _item?.reservado === reservado)
+
+											const disabled = desabilitados.some(
+												(_item) => _item?.reservado === reservado
+											)
+											return (
+												<button
+													id={reservado}
+													key={reservado}
+													onClick={() => {
+														if (tipo === 'abono') {
+															selectId({
+																reservado,
+																precio,
+																asiento: asiento.toString(),
+																codigo,
+																feriaId,
+																tendido
+															})
+														}
+														if (tipo === 'evento') {
+															selectId({
+																reservado,
+																precio,
+																asiento: asiento.toString(),
+																codigo,
+																feriaId,
+																tendido,
+																eventoId
+															})
+														}
+													}}
+													disabled={disabled || bloqueados}
+													className={`rounded-full  h-4 w-4  font-semibold  flex justify-center items-center  ${
+														bloqueados
+															? 'bg-white text-white'
+															: disabled
+															? 'bg-text text-white'
+															: isActive
+															? 'bg-butacas text-white'
+															: 'bg-yellow-500  text-primary'
+													}`}>
+													<p className='text-[7px] leading-0'>{asiento}</p>
+												</button>
+											)
+										} else return null
 									}
-                                   rounded-full  h-4 w-4  font-semibold  flex justify-center items-center `}>
-												<p className='text-[7px] leading-0'>{asiento}</p>
-											</button>
-										)
-									} else return null
-								}
-							)}
+								)}
+							</div>
+							<div className='w-36'>
+								<p className='text-[12px] text-primary font-semibold'>{nombreFilas[index]}</p>
+							</div>
 						</div>
-						<div className='w-36'>
-							<p className='text-[12px] text-primary font-semibold'>{nombreFilas[index]}</p>
-						</div>
-					</div>
-				))}
+					)
+				})}
 				<div
 					className={`${
 						id === 'T1P'
@@ -183,9 +209,17 @@ const Asientos = ({
 							? 'w-[1560px]'
 							: id === 'T2P'
 							? 'w-[1760px]'
-							: id === 'T3'
-							? 'w-[2000px]'
-							: 'w-[650px]'
+							: id === 'T2I'
+							? 'w-[750px]'
+							: id === 'T3P'
+							? 'w-[1010px]'
+							: id === 'T3I'
+							? 'w-[1710px]'
+							: id === 'T4P'
+							? 'w-[1110px]'
+							: id === 'T4I'
+							? 'w-[780px]'
+							: 'w-full'
 					} h-14 overflow-hidden relative mt-5 mx-auto`}>
 					{doble === 'Tendido3' && (
 						<div className='flex justify-between gap-5'>

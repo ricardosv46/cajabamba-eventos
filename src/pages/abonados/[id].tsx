@@ -10,6 +10,7 @@ import { usePaymentContext } from '../../context/payment/PaymentState'
 import { genNombreFilas } from '../../data/asientos'
 import { gentituloButacas } from '../../data/tituloButacas'
 import { useAsientosAbonado } from '../../services/useAsientosAbonado'
+import { useBloques } from '../../services/useBloques'
 
 import { useButacas } from '../../services/useButacas'
 
@@ -22,6 +23,8 @@ const Detalle = () => {
 	const { butacas, loading, refetch } = useButacas(id)
 
 	const { asientos, refetch: refetchAsientos } = useAsientosAbonado({ feriaId: 1, tendido: id })
+
+	const { bloques, loading: loadingBloques } = useBloques({ feriaId: 1, tendido: id })
 
 	const dataAsientos = useMemo(() => {
 		if (butacas.length && !loading) {
@@ -39,8 +42,6 @@ const Detalle = () => {
 		refetch()
 		refetchAsientos()
 	}, [id])
-
-	console.log({ butacas })
 
 	const total = seleccionados.reduce((previousValue, currentValue) => previousValue + currentValue.precio, 0)
 
@@ -69,6 +70,7 @@ const Detalle = () => {
 					{dataAsientos?.length && (
 						<Asientos
 							{...{
+								bloques,
 								data: dataAsientos,
 								desabilitados: asientos,
 								seleccionados,
@@ -77,7 +79,7 @@ const Detalle = () => {
 							}}
 							tipo='abono'
 							doble={id === 'T2S' ? 'Tendido2' : id === 'T3' ? 'Tendido3' : 'Ruedo'}
-							direccion={id === 'T1I' ? 'end' : id === 'T2P' ? 'start' : 'center'}
+							direccion={id === 'T1I' ? 'start' : id === 'T4P' ? 'start' : 'center'}
 							id={id}
 						/>
 					)}
