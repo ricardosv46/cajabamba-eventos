@@ -89,9 +89,7 @@ const Asientos = ({
 
 	useEffect(() => {
 		const newids = seleccionados.filter((seleccionado) => {
-			const desabilitado = desabilitados.some(
-				(desabilitado) => desabilitado?.reservado === seleccionado?.reservado
-			)
+			const desabilitado = desabilitados.some((desabilitado) => desabilitado?.reservado === seleccionado?.reservado)
 			return !desabilitado
 		})
 		setSeleccionados(newids)
@@ -101,10 +99,12 @@ const Asientos = ({
 
 	return (
 		<Zoom id={id}>
-			<div className='flex flex-col  justify-center items-center  px-5 w-full py-16 gap-1'>
+			<div className='flex flex-col items-center justify-center w-full gap-1 px-5 py-16'>
 				{Object.keys(filas).map((fila, index) => {
+					console.log(fila)
 					const isFilaL = fila === 'T1I-F01' || fila === 'T1I-F02' || fila === 'T1I-F03' || fila === 'T1I-F04'
 					const isFilaR = fila === 'T4P-F01' || fila === 'T4P-F02' || fila === 'T4P-F03' || fila === 'T4P-F04'
+					const isPreferencial = fila.includes('P02')
 					const reverse =
 						data[index].tendido === 'T1P' ||
 						data[index].tendido === 'T2P' ||
@@ -112,9 +112,9 @@ const Asientos = ({
 						data[index].tendido === 'T4P'
 
 					return (
-						<div key={fila} className='flex justify-center  items-center gap-5 w-full'>
-							<div className='w-36  text-right'>
-								<p className='text-[12px] text-primary font-semibold'>{nombreFilas[index]}</p>
+						<div key={fila} className='flex items-center justify-center w-full gap-5'>
+							<div className='text-right w-36'>
+								<p className={`text-[12px] text-primary font-semibold ${isPreferencial && 'pt-10'}`}>{nombreFilas[index]}</p>
 							</div>
 							<div
 								className={`flex  justify-${direccion} items-center gap-x-1.5  ${
@@ -135,22 +135,17 @@ const Asientos = ({
 										: id === 'T4I'
 										? 'w-[820px]'
 										: 'w-full'
-								} px-5  ${reverse && 'flex-row-reverse'} ${isFilaL && 'pl-44'} ${isFilaR && 'pr-44'}`}>
+								} px-5  ${reverse && 'flex-row-reverse'} ${isFilaL && 'pl-44'} ${isFilaR && 'pr-44'} ${isPreferencial && 'pt-10'} `}>
 								{filas[`${fila.toString()}`].map(
-									(
-										{ reservado, precio, asiento, codigo, feriaId, tendido, eventoId }: IColums,
-										index: any
-									) => {
+									({ reservado, precio, asiento, codigo, feriaId, tendido, eventoId }: IColums, index: any) => {
 										if (index < asiento) {
-											const isActive = seleccionados.some(
-												(seleccionado) => seleccionado.reservado === reservado
-											)
+											const isVacio = codigo === 'T1P-P01' || codigo === 'T1P-P02' ? (asiento == '28' ? true : false) : false
+
+											const isActive = seleccionados.some((seleccionado) => seleccionado.reservado === reservado)
 
 											const bloqueados = bloques.some((_item) => _item?.reservado === reservado)
 
-											const disabled = desabilitados.some(
-												(_item) => _item?.reservado === reservado
-											)
+											const disabled = desabilitados.some((_item) => _item?.reservado === reservado)
 											return (
 												<button
 													id={reservado}
@@ -179,7 +174,9 @@ const Asientos = ({
 														}
 													}}
 													disabled={disabled || bloqueados}
-													className={`rounded-full  h-4 w-4  font-semibold  flex justify-center items-center  ${
+													className={`rounded-full  h-4 w-4  font-semibold  flex justify-center items-center ${
+														isVacio && 'ml-5'
+													}  ${
 														bloqueados
 															? 'bg-white text-white'
 															: disabled
@@ -196,7 +193,7 @@ const Asientos = ({
 								)}
 							</div>
 							<div className='w-36'>
-								<p className='text-[12px] text-primary font-semibold'>{nombreFilas[index]}</p>
+								<p className={`text-[12px] text-primary font-semibold ${isPreferencial && 'pt-10'} `}>{nombreFilas[index]}</p>
 							</div>
 						</div>
 					)
@@ -223,24 +220,18 @@ const Asientos = ({
 					} h-14 overflow-hidden relative mt-5 mx-auto`}>
 					{doble === 'Tendido3' && (
 						<div className='flex justify-between gap-5'>
-							<div className='bg-text w-full  h-9'>
-								<p className=' text-white flex justify-center items-center  w-full h-full'>
-									TENDIDO 3B
-								</p>
+							<div className='w-full bg-text h-9'>
+								<p className='flex items-center justify-center w-full h-full text-white '>TENDIDO 3B</p>
 							</div>
-							<div className='bg-text w-full  h-9'>
-								<p className=' text-white flex justify-center items-center  w-full h-full'>
-									TENDIDO 3A
-								</p>
+							<div className='w-full bg-text h-9'>
+								<p className='flex items-center justify-center w-full h-full text-white '>TENDIDO 3A</p>
 							</div>
 						</div>
 					)}
 					{doble === 'Tendido2' && (
 						<div className='flex'>
-							<div className='bg-text w-full  h-9'>
-								<p className=' text-white flex justify-center items-center  w-full h-full'>
-									TENDIDO 2 BAJO
-								</p>
+							<div className='w-full bg-text h-9'>
+								<p className='flex items-center justify-center w-full h-full text-white '>TENDIDO 2 BAJO</p>
 							</div>
 						</div>
 					)}
@@ -251,9 +242,7 @@ const Asientos = ({
 									d='M0.00,49.98 C-71.95,55.77 250.27,-17.25 500.00,49.98 L500.00,120.00 L-0.27,117.94 Z'
 									className='fill-text '></path>
 							</svg>
-							<div className='absolute top-0  text-white flex justify-center items-center  w-full h-full '>
-								RUEDO
-							</div>
+							<div className='absolute top-0 flex items-center justify-center w-full h-full text-white '>RUEDO</div>
 						</>
 					)}
 				</div>
@@ -265,7 +254,7 @@ const Asientos = ({
 export default Asientos
 
 {
-	/* <div className='flex w-full justify-end gap-3 pt-2'>
+	/* <div className='flex justify-end w-full gap-3 pt-2'>
 					<button onClick={() => {}}>
 						<IconSearchPlus fill='#4C000C' width={20} height={20}></IconSearchPlus>
 					</button>
