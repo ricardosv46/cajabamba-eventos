@@ -11,10 +11,10 @@ import { useCarritoContext } from '../../context/cart/CarritoState'
 import { getSession, signOut, useSession } from 'next-auth/react'
 
 const links = [
-	{ title: 'Inicio', path: '/' },
-	{ title: 'La Plaza', path: '/plaza' },
-	{ title: 'Eventos', path: '/eventos' },
-	{ title: 'Contacto', path: '#contacto' }
+	{ title: 'Inicio', path: '/' }
+	// { title: 'La Plaza', path: '/plaza' },
+	// { title: 'Eventos', path: '/eventos' },
+	// { title: 'Contacto', path: '#contacto' }
 ]
 
 const Header = () => {
@@ -56,7 +56,7 @@ const Header = () => {
 	return (
 		<header
 			className={`h-[70px] md:h-[80px] w-full fixed  top-0  z-10 flex-col justify-center items-center transition-colors duration-500 ease-in-out $ ${
-				pathname === '/' || pathname === `/eventos/[slug]`
+				pathname === '' || pathname === `/eventos/[slug]`
 					? navbar
 						? 'bg-primary bg-opacity-80 backdrop-blur'
 						: 'bg-transparent'
@@ -64,14 +64,14 @@ const Header = () => {
 			}`}>
 			{/* menu desktop */}
 			<nav className='hidden mx-auto my-0 w-[90%] xl:w-[1200px] flex-col h-full  lg:flex items-center justify-center'>
-				<div className='w-full   text-white text-lg  flex items-center justify-between'>
+				<div className='flex items-center justify-between w-full text-lg text-white'>
 					<Link href='/' passHref>
 						<div className='flex w-[20%]'>
 							<Image objectFit='scale-down' className='cursor-pointer' src='/imgs/logos/logo.png' width={180} height={60} alt='logo' />
 						</div>
 					</Link>
 					<div className='w-[60%]  flex items-center gap-16'>
-						<ul className='flex gap-8 mx-auto relative '>
+						<ul className='relative flex gap-8 mx-auto '>
 							{links.map(({ title, path }) => (
 								<Link href={path} passHref key={title}>
 									<li
@@ -92,10 +92,10 @@ const Header = () => {
 								setShowModal(true)
 							}}
 							style={{ boxShadow: '-8px 6px 13px 0px rgba(0,0,0,0.42)' }}
-							className='bg-tertiary pr-4 pl-3 py-2 rounded-sm text-white font-semibold cursor-pointer  shadow-primary'>
-							<div className='flex gap-x-2 items-center'>
+							className='py-2 pl-3 pr-4 font-semibold text-white rounded-sm cursor-pointer bg-tertiary shadow-primary'>
+							<div className='flex items-center gap-x-2'>
 								<IconUser fill='#fff' height={20} width={20} />
-								<p className=' text-sm'>{status === 'authenticated' ? data?.user?.nombres : 'Ingresa'}</p>
+								<p className='text-sm '>{status === 'authenticated' ? data?.user?.nombres : 'Ingresa'}</p>
 							</div>
 						</button>
 					</div>
@@ -103,13 +103,13 @@ const Header = () => {
 			</nav>
 			{/* menu mobile */}
 			<nav className={`lg:hidden mx-auto my-0 w-[90%] xl:w-[1280px] flex justify-between items-center h-full `}>
-				<div className='flex w-full justify-between items-center  '>
+				<div className='flex items-center justify-between w-full '>
 					<Link href='/' passHref>
 						<div className='flex'>
 							<Image className='cursor-pointer' src='/imgs/logos/logo.png' width={120} height={50} alt='logo' />
 						</div>
 					</Link>
-					<div className='flex  items-center gap-5'>
+					<div className='flex items-center gap-5'>
 						<button
 							aria-label='Login'
 							onClick={() => {
@@ -117,10 +117,10 @@ const Header = () => {
 								setShowModal(true)
 							}}
 							style={{ boxShadow: '-8px 6px 13px 0px rgba(0,0,0,0.42)' }}
-							className='bg-tertiary px-3 py-2 rounded-sm text-white font-semibold cursor-pointer  shadow-primary'>
+							className='px-3 py-2 font-semibold text-white rounded-sm cursor-pointer bg-tertiary shadow-primary'>
 							<div className='flex items-center gap-x-3'>
 								<IconUser fill='#fff' height={25} width={25} />
-								<p className=' text-sm'>{status === 'authenticated' ? data?.user?.nombres : 'Ingresa'}</p>
+								<p className='text-sm '>{status === 'authenticated' ? data?.user?.nombres : 'Ingresa'}</p>
 							</div>
 						</button>
 						<BtnBurger isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -154,11 +154,11 @@ const Header = () => {
 						<div className='relative mx-auto my-0 w-[90%] xl:w-[1280px]'>
 							<div className='absolute top-0 bg-tertiary rounded-lg z-50 w-60 p-3 -right-4 lg:-right-[60px] xl:-right-[35px]'>
 								<div className=' justify-center w-full absolute -top-2.5 left-0 z-50 flex'>
-									<div className='h-5 w-5 bg-tertiary rotate-45'></div>
+									<div className='w-5 h-5 rotate-45 bg-tertiary'></div>
 								</div>
 
 								<button
-									className='bg-primary mt-2 rounded-lg w-full py-2 text-white font-bold'
+									className='w-full py-2 mt-2 font-bold text-white rounded-lg bg-primary'
 									onClick={() => {
 										router.push('/mi-cuenta')
 										setCerrar(false)
@@ -166,7 +166,7 @@ const Header = () => {
 									Perfil
 								</button>
 
-								<button className='bg-primary mt-2 rounded-lg w-full py-2 text-white font-bold' onClick={handleSignOut}>
+								<button className='w-full py-2 mt-2 font-bold text-white rounded-lg bg-primary' onClick={handleSignOut}>
 									Cerrar Sesión
 								</button>
 							</div>
