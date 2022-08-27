@@ -67,35 +67,21 @@ export const FormPayAuth = ({ isAbono, onSubmit, desabilitados, isOpen, onOpen, 
 	const { createPedidoEvento, loadingCreate: loadingCreateAbonado } = usePedidoEvento()
 	const { createPedidoAbonado, loadingCreate: loadingCreateEvento } = usePedidoAbonado()
 	const user = JSON.parse(localStorage.getItem('user') as any)
-	const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
-		validate,
-		onSubmit: onOpen,
-		initialValues: {
-			tipoComprobante: 'Boleta',
-			documento: '',
-			razonSocial: ''
-		}
-	})
 
 	const handleOnChangeCheckBox = () => {
 		setIsChecked(!isChecked)
 	}
 
-	const handlePay = async ({ id }: { id: string }) => {
-		const transaccionId = parseInt(id)
-
+	const handlePay = async () => {
 		if (isAbono) {
 			const res = await createPedidoAbonado({
 				input1: {
-					transaccionId,
+					transaccionId: 12345,
 					precioTotal: total,
 					fechaPedido: fecha,
 					numeroComprobante: values.documento,
 					tipoComprobante: values.tipoComprobante,
-					razonSocial:
-						values.tipoComprobante === 'Factura'
-							? values?.razonSocial
-							: `${user?.nombres} ${user?.apellidos}`
+					razonSocial: values.tipoComprobante === 'Factura' ? values?.razonSocial : `${user?.nombres} ${user?.apellidos}`
 				},
 				input2: pago,
 				input3: {}
@@ -107,15 +93,12 @@ export const FormPayAuth = ({ isAbono, onSubmit, desabilitados, isOpen, onOpen, 
 		if (!isAbono) {
 			const res = await createPedidoEvento({
 				input1: {
-					transaccionId,
+					transaccionId: 12345,
 					precioTotal: total,
 					fechaPedido: fecha,
 					numeroComprobante: values.documento,
 					tipoComprobante: values.tipoComprobante,
-					razonSocial:
-						values.tipoComprobante === 'Factura'
-							? values?.razonSocial
-							: `${user?.nombres} ${user?.apellidos}`
+					razonSocial: values.tipoComprobante === 'Factura' ? values?.razonSocial : `${user?.nombres} ${user?.apellidos}`
 				},
 				input2: pago,
 				input3: {}
@@ -125,12 +108,20 @@ export const FormPayAuth = ({ isAbono, onSubmit, desabilitados, isOpen, onOpen, 
 		}
 	}
 
+	const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
+		validate,
+		onSubmit: handlePay,
+		initialValues: {
+			tipoComprobante: 'Boleta',
+			documento: '',
+			razonSocial: ''
+		}
+	})
+
 	const total = pago.reduce((prev, curr) => prev + curr.precio, 0)
 
 	useEffect(() => {
-		const desabilitado = pago.map((seleccionado) =>
-			desabilitados.some((desabilitado) => desabilitado?.reservado === seleccionado?.reservado)
-		)[0]
+		const desabilitado = pago.map((seleccionado) => desabilitados.some((desabilitado) => desabilitado?.reservado === seleccionado?.reservado))[0]
 
 		if (desabilitados) {
 			onClose()
@@ -143,9 +134,9 @@ export const FormPayAuth = ({ isAbono, onSubmit, desabilitados, isOpen, onOpen, 
 	}, [desabilitados, pago])
 
 	return (
-		<form onSubmit={handleSubmit} className='grid grid-cols-1 lg:grid-cols-2 gap-3 mt-8'>
+		<form onSubmit={handleSubmit} className='grid grid-cols-1 gap-3 mt-8 lg:grid-cols-2'>
 			<ModalLoading isOpen={loadingCreateAbonado || loadingCreateEvento} />
-			<ModalPayme
+			{/* <ModalPayme
 				isOpen={isOpen}
 				onClose={onClose}
 				onChange={handlePay}
@@ -157,9 +148,9 @@ export const FormPayAuth = ({ isAbono, onSubmit, desabilitados, isOpen, onOpen, 
 					subscriber: user?.celular || '999999999',
 					identity_document_identifier: user.documento || values?.documento
 				})}
-			/>
+			/> */}
 
-			<div className='grid h-auto grid-cols-1 sm:grid-cols-2 gap-6'>
+			<div className='grid h-auto grid-cols-1 gap-6 sm:grid-cols-2'>
 				<select
 					name='tipoComprobante'
 					className='rounded-md h-[50px] px-3 border border-gray-300 '
@@ -200,32 +191,21 @@ export const FormPayAuth = ({ isAbono, onSubmit, desabilitados, isOpen, onOpen, 
 							onBlur={handleBlur}
 						/>
 						{errors.razonSocial && touched.razonSocial ? (
-							<p className='text-red-500 leading-5 absolute -bottom-5 text-sm px-1 '>
-								{errors.razonSocial}
-							</p>
+							<p className='absolute px-1 text-sm leading-5 text-red-500 -bottom-5 '>{errors.razonSocial}</p>
 						) : null}
 					</div>
 				)}
 				{values.tipoComprobante === 'Factura' && <div></div>}
 
 				<div className='flex items-center gap-x-2'>
-					<input
-						type='checkbox'
-						id='topping'
-						name='topping'
-						value='Terminos'
-						checked={isChecked}
-						onChange={handleOnChangeCheckBox}
-					/>
+					<input type='checkbox' id='topping' name='topping' value='Terminos' checked={isChecked} onChange={handleOnChangeCheckBox} />
 
-					<p
-						className='text-xs cursor-pointer hover:underline hover:text-secondary'
-						onClick={() => window.open('/terminosycondiciones')}>
+					<p className='text-xs cursor-pointer hover:underline hover:text-secondary' onClick={() => window.open('/terminosycondiciones')}>
 						Acepto los términos y condiciones
 					</p>
 				</div>
 
-				<div className='flex gap-2 justify-start items-center '>
+				<div className='flex items-center justify-start gap-2 '>
 					<IconShield width={20} height={20} fill='#F0AC42' />
 					<p className='text-md text-[#F0AC42] font-bold'>Compra Segura</p>
 				</div>
@@ -236,9 +216,7 @@ export const FormPayAuth = ({ isAbono, onSubmit, desabilitados, isOpen, onOpen, 
 					<p className='text-xl font-bold'>{pago.length}</p>
 				</div>
 				{pago.map((item) => {
-					const desabilitado = desabilitados.some(
-						(desabilitado) => desabilitado?.reservado === item?.reservado
-					)
+					const desabilitado = desabilitados.some((desabilitado) => desabilitado?.reservado === item?.reservado)
 
 					const newtiems = pago.filter((seleccionado) => seleccionado.reservado !== item.reservado)
 
@@ -248,17 +226,17 @@ export const FormPayAuth = ({ isAbono, onSubmit, desabilitados, isOpen, onOpen, 
 
 					return (
 						<div key={item.reservado} className='relative'>
-							<div className='flex w-full justify-between gap-40 pl-20'>
-								<p className=' text-xs leading-none mt-2'>1 x ABONO – {item.reservado}</p>
-								<p className='text-md font-bold leading-none'>S/{item.precio.toFixed(2)}</p>
+							<div className='flex justify-between w-full gap-40 pl-20'>
+								<p className='mt-2 text-xs leading-none '>1 x ABONO – {item.reservado}</p>
+								<p className='font-bold leading-none text-md'>S/{item.precio.toFixed(2)}</p>
 							</div>
-							<div className='flex w-full justify-between gap-40 pl-20 leading-none'>
-								<p className='text-red-500 text-xs left-5 leading-none'>
+							<div className='flex justify-between w-full gap-40 pl-20 leading-none'>
+								<p className='text-xs leading-none text-red-500 left-5'>
 									{desabilitado ? 'No disponible por favor vuleva a seleccionar' : ''}
 								</p>
 							</div>
 							{desabilitado && (
-								<button className='text-red-500 absolute -top-0 -right-5' onClick={removeItem}>
+								<button className='absolute text-red-500 -top-0 -right-5' onClick={removeItem}>
 									X
 								</button>
 							)}
@@ -270,14 +248,9 @@ export const FormPayAuth = ({ isAbono, onSubmit, desabilitados, isOpen, onOpen, 
 					<p>S/{total.toFixed(2)}</p>
 				</div>
 
-				<div className='w-full flex items-center justify-end gap-x-4 mt-5 '>
+				<div className='flex items-center justify-end w-full mt-5 gap-x-4 '>
 					<div className='mt-1'>
-						<Image
-							src='/imgs/detalle/tarjetas-credito.png'
-							alt='Picture of the author'
-							width={110}
-							height={30}
-						/>
+						<Image src='/imgs/detalle/tarjetas-credito.png' alt='Picture of the author' width={110} height={30} />
 					</div>
 
 					<button
