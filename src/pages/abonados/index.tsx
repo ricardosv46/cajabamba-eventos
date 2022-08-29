@@ -120,16 +120,10 @@ const Abonados = () => {
 
 					<section className='z-0 flex items-start justify-center py-5'>
 						<article className='border w-full  lg:w-[280px] xl:w-[380px] p-3 rounded-md flex flex-col gap-1 shadow-xl'>
-							<h2 className='text-2xl font-bold text-primary'>Lurín, Lima</h2>
+							<h2 className='text-2xl font-bold text-primary'>Cajabamba, Cajamarca</h2>
 							<p className='font-semibold text-md text-text'>Fundo Cajabamba</p>
 							<div className='w-full'>
-								{/* <iframe
-									src='https://www.google.com/maps/place/Plaza+de+Toros+de+Cajabamba,+Cajabamba+06351/@-7.6174372,-78.0487606,17z/data=!3m1!4b1!4m5!3m4!1s0x91b20761c240a495:0x5fc7ba61400343be!8m2!3d-7.6174185!4d-78.0465592'
-									width='100%'
-									height='350'
-									loading='lazy'
-								/> */}
-
+								
 								<iframe
 									src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3954.6091463004136!2d-78.04657189999999!3d-7.61743725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91b20761c240a495%3A0x5fc7ba61400343be!2sPlaza%20de%20Toros%20de%20Cajabamba%2C%20Cajabamba%2006351!5e0!3m2!1ses-419!2spe!4v1661791310005!5m2!1ses-419!2spe'
 									width='100%'

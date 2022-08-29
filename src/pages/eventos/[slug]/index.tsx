@@ -171,7 +171,7 @@ const Compra = () => {
 
 						<section className='z-0 flex items-start justify-center py-5 lg:justify-end'>
 							<article className='border w-full  lg:w-[280px] xl:w-[380px] p-3 rounded-md flex flex-col gap-1  shadow-xl'>
-								<h2 className='text-2xl font-bold text-primary'>Lurín, Lima</h2>
+								<h2 className='text-2xl font-bold text-primary'>Cajabamba, Cajamarca</h2>
 								<p className='font-semibold text-md text-text'>Fundo Cajabamba</p>
 								<div className='w-full'>
 									<iframe
