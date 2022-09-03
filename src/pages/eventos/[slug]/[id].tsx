@@ -58,7 +58,7 @@ const Detalle = () => {
 
 	return (
 		<div className='flex flex-col items-center justify-center w-full'>
-			<section className='bg-white pt-5 w-auto'>
+			<section className='w-full pt-5 bg-white'>
 				<div className='flex justify-center mb-5'>
 					<Image
 						objectFit='scale-down'
@@ -69,15 +69,13 @@ const Detalle = () => {
 						alt='logo'
 					/>
 				</div>
-				<p className='text-center text-3xl text-primary font-bold'>SELECCIONA TUS ASIENTOS</p>
-				<div className='flex flex-col justify-center border-b-2 border-t-2 border-primary py-5 mt-5'>
-					<div className='flex justify-between items-center px-3 lg:px-8'>
-						<p className=' text-base text-primary font-bold lg:text-xl'>{gentituloButacas(id)}</p>
-						<div className='flex gap-3 items-center'>
+				<p className='text-3xl font-bold text-center text-primary'>SELECCIONA TUS ASIENTOS</p>
+				<div className='flex flex-col justify-center py-5 mt-5 border-t-2 border-b-2 border-primary'>
+					<div className='flex items-center justify-between px-3 lg:px-8'>
+						<p className='text-base font-bold  text-primary lg:text-xl'>{gentituloButacas(id)}</p>
+						<div className='flex items-center gap-3'>
 							<IconDate fill='#4C000C' width={20} height={20} />
-							<p className='text-primary font-bold lg:text-base text-xs'>
-								{moment(eventoSlug?.fecha).format('LL')}
-							</p>
+							<p className='text-xs font-bold text-primary lg:text-base'>{moment(eventoSlug?.fecha).format('LL')}</p>
 						</div>
 					</div>
 					{dataAsientos?.length && (
@@ -98,28 +96,28 @@ const Detalle = () => {
 						/>
 					)}
 				</div>
-				<div className='p-5 flex gap-3 text-sm lg:text-base'>
-					<div className='flex gap-2 items-center'>
+				<div className='flex gap-3 p-5 text-sm lg:text-base'>
+					<div className='flex items-center gap-2'>
 						<span className='w-2.5 h-2.5 bg-primary rounded-full'></span>
 						<p className='text-tertiary'>Seleccionados</p>
 					</div>
-					<div className='flex gap-2 items-center'>
+					<div className='flex items-center gap-2'>
 						<span className='w-2.5 h-2.5 bg-secondary rounded-full'></span>
 						<p className='text-tertiary'>Libres</p>
 					</div>
-					<div className='flex gap-2 items-center'>
+					<div className='flex items-center gap-2'>
 						<span className='w-2.5 h-2.5 bg-text rounded-full'></span>
 						<p className='text-tertiary'>No disponibles</p>
 					</div>
 				</div>
 			</section>
-			<div className=' bg-secondary  w-full flex justify-center'>
+			<div className='flex justify-center w-full  bg-secondary'>
 				<div className='py-10 px-5 max-w-[1200px] flex flex-col lg:flex-row justify-between w-full'>
-					<div className='flex flex-col lg:flex-row gap-5 items-center'>
-						<p className='text-primary font-bold'>Seleccionados:</p>
-						<div className='flex flex-wrap lg:grid lg:grid-cols-10 leading-none gap-2'>
+					<div className='flex flex-col items-center gap-5 lg:flex-row'>
+						<p className='font-bold text-primary'>Seleccionados:</p>
+						<div className='flex flex-wrap gap-2 leading-none lg:grid lg:grid-cols-10'>
 							{seleccionados.map((item) => (
-								<p key={item.reservado} className='text-primary text-xs font-bold'>
+								<p key={item.reservado} className='text-xs font-bold text-primary'>
 									{item.reservado}
 								</p>
 							))}
@@ -128,7 +126,7 @@ const Detalle = () => {
 					<div className='flex items-end'>
 						<button
 							disabled={seleccionados.length === 0}
-							className='bg-tertiary px-5 py-2 text-white rounded-lg mt-10 lg:mt-0'
+							className='px-5 py-2 mt-10 text-white rounded-lg bg-tertiary lg:mt-0'
 							onClick={() => {
 								navigation.push({
 									pathname: '/check-out/',
