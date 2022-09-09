@@ -123,7 +123,7 @@ export const FormPayAuth = ({
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
     validate,
-    onSubmit: handlePay,
+    onSubmit: onOpen,
     initialValues: {
       tipoComprobante: 'Boleta',
       documento: '',
@@ -151,19 +151,19 @@ export const FormPayAuth = ({
   return (
     <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-3 mt-8 lg:grid-cols-2">
       <ModalLoading isOpen={loadingCreateAbonado || loadingCreateEvento} />
-      {/* <ModalPayme
-				isOpen={isOpen}
-				onClose={onClose}
-				onChange={handlePay}
-				payload={payRequest({
-					amount: total,
-					first_name: user?.nombres || '',
-					last_name: user?.apellidos || '',
-					email: user?.email || '',
-					subscriber: user?.celular || '999999999',
-					identity_document_identifier: user.documento || values?.documento
-				})}
-			/> */}
+      <ModalPayme
+        isOpen={isOpen}
+        onClose={onClose}
+        onChange={handlePay}
+        payload={payRequest({
+          amount: total,
+          first_name: user?.nombres || '',
+          last_name: user?.apellidos || '',
+          email: user?.email || '',
+          subscriber: user?.celular || '999999999',
+          identity_document_identifier: user.documento || values?.documento
+        })}
+      />
 
       <div className="grid h-auto grid-cols-1 gap-6 sm:grid-cols-2">
         <select

@@ -183,7 +183,7 @@ export const FormPayNotAuth = ({
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
     validate,
-    onSubmit: handlePay,
+    onSubmit: onOpen,
     initialValues: {
       tipoComprobante: 'Boleta',
       documento: '',
@@ -214,18 +214,19 @@ export const FormPayNotAuth = ({
   return (
     <>
       <ModalLoading isOpen={loadingCreateAbonado || loadingCreateEvento} />
-      {/* <ModalPayme
+      <ModalPayme
         isOpen={isOpen}
         onClose={onClose}
         onChange={handlePay}
-        payload={payRequest({ amount: total,
-          first_name:values.nombres ,
-          last_name:values.apellidos,
-          email:values.email ,
-          subscriber:values.celular ,
-          identity_document_identifier:values.documento,
+        payload={payRequest({
+          amount: total,
+          first_name: values.nombres,
+          last_name: values.apellidos,
+          email: values.email,
+          subscriber: values.celular,
+          identity_document_identifier: values.documento
         })}
-      /> */}
+      />
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-3 mt-8 lg:grid-cols-2">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
